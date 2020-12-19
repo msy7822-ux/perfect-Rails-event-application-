@@ -1,0 +1,57 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
+# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+
+name: Rails Tests
+on: [push, pull_request]
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby 2.6
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+    - name: Build and test
+      env:
+        RAILS_ENV: test
+      run:
+        sudo apt-get yqq install libsqlite3-dev
+        bundle install --jobs 4 --retry 3
+        bin/rails db:create
+        bin/rails db:migrate
+        bin/yarn install
+        bin/rails test
+        bin/rails test:system 
+      
+# 以下はデフォルトのコード
+# name: Ruby
+
+# on:
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+
+# jobs:
+#   test:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Set up Ruby
+#     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
+#     # change this to (see https://github.com/ruby/setup-ruby#versioning):
+#     # uses: ruby/setup-ruby@v1
+#       uses: ruby/setup-ruby@21351ecc0a7c196081abca5dc55b08f085efe09a
+#       with:
+#         ruby-version: 2.6
+#     - name: Install dependencies
+#       run: bundle install
+#     - name: Run tests
+#       run: bundle exec rake
