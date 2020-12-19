@@ -7,11 +7,19 @@ Things you may want to cover:
 
 * Ruby version
 
+2.6.5
+
+* Rails version
+
+6.0.3.4
+
 * System dependencies
 
 * Configuration
 
 * Database creation
+
+sqlite3 (3.28.0)
 
 * Database initialization
 
